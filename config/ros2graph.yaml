@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    host: 127.0.0.1
+    port: 8080
+    refresh_s: 2.0
+    watch_enabled: true
+    watch_max_topics: 256
+    watch_max_clients: 8
+    watch_lease_s: 12.0
+    watch_messages_per_window: 10000
+    rpc_trace_socket: ""
+    token_file: ""
+    tls_cert: ""
+    tls_key: ""

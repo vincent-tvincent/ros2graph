@@ -1,0 +1,16 @@
+build/
+install/
+log/
+dist/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.venv/
+node_modules/
+coverage/
+local/
+*.pem
+*.key
+.env
+.DS_Store
+._*

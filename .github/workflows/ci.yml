@@ -1,0 +1,51 @@
+name: Tests
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install 'aiohttp>=3.8,<4' pytest setuptools wheel
+      - run: python -m pytest tests -q
+      - run: node --test tests/*.mjs
+      - run: python -m pip wheel --no-deps --no-build-isolation . -w dist
+  ros:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ros: [humble, jazzy]
+    container: ros:${{ matrix.ros }}-ros-base
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build and demo dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y python3-colcon-common-extensions python3-aiohttp ros-${ROS_DISTRO}-example-interfaces
+      - name: Build and attach to an existing demo graph
+        shell: bash
+        run: |
+          source /opt/ros/${ROS_DISTRO}/setup.bash
+          colcon build --packages-select ros2graph
+          source install/setup.bash
+          bash tests/run_ros_smoke.sh --without-trace --output smoke-report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ros-${{ matrix.ros }}-smoke
+          path: smoke-report/

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ros2graph</name>
+  <version>0.1.0</version>
+  <description>Standalone ROS 2 graph explorer with live traffic observation.</description>
+  <maintainer email="vincent.pu@outlook.com">Vincent Pu</maintainer>
+  <license>Apache-2.0</license>
+  <url type="repository">https://github.com/vincent-tvincent/ros2graph</url>
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>rosidl_runtime_py</exec_depend>
+  <exec_depend>action_msgs</exec_depend>
+  <exec_depend>python3-aiohttp</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>example_interfaces</exec_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_python</build_type></export>
+</package>

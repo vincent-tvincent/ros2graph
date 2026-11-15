@@ -1,0 +1,11 @@
+ros2graph
+Copyright 2026 Vincent Pu and contributors.
+
+The graph renderer and observation components originated in SO-Arm Station
+Runtime, https://github.com/vincent-tvincent/soarm-station-runtime,
+source revision 317ea603d13766ef09f3f074f2c34b21e3bbcabe.
+They have been extracted and adapted for robot-independent use.
+
+This distribution contains no LeRobot, model weights, robot calibration,
+device drivers, fonts, or third-party JavaScript bundles. ROS 2, aiohttp,
+LTTng and Babeltrace are separate dependencies under their respective licenses.
