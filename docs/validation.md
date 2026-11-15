@@ -6,6 +6,9 @@ tracing additionally depends on the installed RMW and standard tracepoints.
 
 ## Extraction validation — November 15, 2026
 
+The live ROS tests ran on Ubuntu 26.04.1 LTS, kernel `7.0.0-1023-raspi`,
+aarch64, ROS 2 Lyrical, `rmw_fastrtps_cpp`, Python 3.14.4 and aiohttp 3.14.5.
+
 | Check | Observed result |
 | --- | --- |
 | Python observer, HTTP, RPC, identity and lifecycle tests | 134 passed. |

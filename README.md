@@ -258,6 +258,16 @@ reported as unavailable; topology and normal topic monitoring continue. Start
 the collector before your next normal application startup to obtain those
 mappings. ros2graph never restarts application nodes for you.
 
+Collector capacity and lifecycle can be configured independently:
+
+| Collector flag | Default | Purpose |
+| --- | --- | --- |
+| `--socket PATH` | Per-user runtime directory | Socket also supplied to the viewer's `rpc_trace_socket`. The examples specify an explicit shared path. |
+| `--max-endpoints N` | `256` | RPC/node mapping capacity; increase for larger systems. This is separate from `watch_max_topics`. |
+| `--interval SECONDS` | `1` | Snapshot interval, clamped to 0.25–2 seconds. |
+| `--parent-pid PID` | none | Optional process-tree scope instead of all observable processes belonging to this user. |
+| `--exit-with-parent` | off | Stop if the collector's launching parent exits. |
+
 The collector is a separate process because it has Linux-specific dependencies
 and a different lifetime from the web viewer. It uses a private local socket
 and bounded temporary snapshots, and removes its own session and temporary
@@ -282,7 +292,8 @@ capacity limits and the meaning of every counter.
   separates the four phases.
 - **Action rate:** observed feedback/status plus measured server-side
   goal/cancel/result traffic. The inspector preserves these components.
-- **0 Hz:** the source is being observed and is idle. **Unavailable**, **capacity**
+- **0 Hz:** no receipts/events were observed during the interval. This does not
+  prove the application itself is idle. **Unavailable**, **capacity**
   or **throttled** is different from idle; the inspector explains the reason.
 - **Unresolved endpoint:** the middleware did not report a trustworthy node
   identity. ros2graph preserves that uncertainty rather than inventing a label.

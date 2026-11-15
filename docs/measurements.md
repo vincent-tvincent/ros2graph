@@ -84,12 +84,17 @@ with no events during its positive observation interval.
   temporary directory are private to the user. No permanent archive is created.
 - Clean shutdown removes only the collector's own session, socket and temporary
   files. It does not stop application processes or unrelated tracing sessions.
+  Its zero-byte `.lock` file remains intentionally so concurrent starts cannot
+  race across different lock inodes; it is not a trace archive.
+- RPC/node mappings default to 256 via collector `--max-endpoints`, with a
+  topic-GID proof capacity eight times that value. Increase this separately
+  from the viewer's raw-subscription capacity for a larger system.
 
 ## Display states
 
 | Display/state | Meaning |
 | --- | --- |
-| Watching / a numeric rate | A measurement path is active. Zero is a measured idle interval. |
+| Watching / a numeric rate | A measurement path is active. Zero means no receipts/events observed during the interval; it does not prove application inactivity. |
 | Monitor off / inactive | No active watch, or watching has been disabled. |
 | Unavailable | Missing type support, missing trace identity, stale source, or another concrete observation error. |
 | Capacity / limited | The configured observer capacity was reached. |
