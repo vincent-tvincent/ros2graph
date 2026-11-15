@@ -28,6 +28,16 @@ def _positive_int(value,name):
     return value
 
 
+def raw_message_info_supported():
+    """Older rclpy executors deliver only data to raw callbacks."""
+    try:
+        from rclpy.subscription import Subscription
+    except ImportError:
+        return False
+    callback_type=getattr(Subscription,'CallbackType',None)
+    return callback_type is not None and hasattr(callback_type,'WithMessageInfo')
+
+
 def _gid(value):
     try:
         # Lyrical nests the bytes inside PublisherGID's TypedDict. Older
@@ -59,11 +69,15 @@ def empty_activity(state='inactive', reason='No active watch lease'):
 
 class GraphWatch:
     def __init__(self, node, config=None, activity_provider=None, resolver=None,
-                 qos_factory=None, status_decoder=None, clock=time.monotonic, wall=time.time_ns):
+                 qos_factory=None, status_decoder=None, clock=time.monotonic, wall=time.time_ns,
+                 supports_message_info=None):
         c = config or {}
         self.node, self.clock, self.wall = node, clock, wall
         self.provider, self.resolver, self.qos_factory = activity_provider, resolver, qos_factory
         self.status_decoder = status_decoder
+        if supports_message_info is not None and type(supports_message_info)!=bool:
+            raise ValueError('supports_message_info must be boolean or None')
+        self.supports_message_info=raw_message_info_supported() if supports_message_info is None else supports_message_info
         self.enabled = c.get('enabled', True)
         self.max_topics = _positive_int(c.get('max_topics',64),'watch.max_topics')
         self.max_clients = _positive_int(c.get('max_clients',8),'watch.max_clients')
@@ -302,6 +316,19 @@ class GraphWatch:
                 del self.subscriptions[name]
             self.cleanup_errors.pop(name, None)
 
+    def _callback_for(self,name,record):
+        if self.supports_message_info:
+            # Both are required: modern rclpy first tries to bind one argument.
+            # Making MessageInfo optional silently discards publisher attribution.
+            def receive(data,message_info):
+                self._receive(name,record,data,message_info)
+        else:
+            # Legacy executors invoke raw callbacks with data only. These are
+            # real receipts, but their publisher identity remains unknown.
+            def receive(data):
+                self._receive(name,record,data)
+        return receive
+
     def reconcile(self):
         """Called only by the observer thread (or deterministic offline tests)."""
         with self.reconcile_lock:
@@ -365,16 +392,9 @@ class GraphWatch:
                         qos = QoSProfile(depth=1, reliability=ReliabilityPolicy.BEST_EFFORT, durability=DurabilityPolicy.VOLATILE)
                     else:
                         qos = self.qos_factory()
-                    # Both arguments are required: rclpy can classify an
-                    # optional second argument as a message-only callback and
-                    # then omit MessageInfo (and every publisher GID).
-                    def callback_for(topic_name, topic_record):
-                        def receive(data, message_info):
-                            self._receive(topic_name, topic_record, data, message_info)
-                        return receive
                     with self.lock:
                         record['state'], record['reason'], record['message_type'] = 'watching', '', message_type
-                    handle = self.node.create_subscription(message_type, name, callback_for(name, record), qos, raw=True)
+                    handle = self.node.create_subscription(message_type,name,self._callback_for(name,record),qos,raw=True)
                     with self.lock:
                         self.subscriptions[name] = handle
                         record['subscribed'] = True

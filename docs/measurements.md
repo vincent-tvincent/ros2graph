@@ -18,6 +18,12 @@ subscriber took that message or ran its callback. Moving subscription dots for
 topic traffic intentionally carry that observer-level meaning. Service/action
 trace phases are separately labeled and can report endpoint-specific activity.
 
+Older rclpy versions, including Humble, deliver only the raw message to a
+subscription callback. ros2graph detects that capability and still counts
+receipts, bytes and rates; publisher attribution remains unknown. Newer versions
+that provide MessageInfo preserve the full publisher GID. The observer does not
+guess a publisher from its name or silently discard metadata on newer ROS.
+
 Raw image, compressed image and point-cloud streams are eligible for continuous
 watch. Eligibility does not make subscribing free: DDS must transport the data
 to the observer and Python callbacks still run. On a busy robot, run the viewer

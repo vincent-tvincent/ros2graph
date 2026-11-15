@@ -1,5 +1,6 @@
 import copy
 import json
+import pytest
 
 from ros2graph.graph_rpc import project_rpc_activity,service_activity
 
@@ -140,7 +141,7 @@ def test_actions_add_distinct_rpc_channels_and_align_display_history_without_cha
     assert activity['status']==status and activity['feedback']==feedback
     assert set(activity['rpc'])=={'state','goal','cancel','result'}
     assert activity['rpc']['goal']['requests']['messages']==5
-    assert activity['display']['messages']==37 and activity['display']['rate_hz']==7.4
+    assert activity['display']['messages']==37 and activity['display']['rate_hz']==pytest.approx(7.4)
     assert activity['display']['history_clock_type']=='observer_monotonic'
     assert activity['display']['history']==[{'at_ns':'19500000000','messages':37,'bytes':None}]
     old_id=activity['display']['sample_id'];source['epoch']='counter-two'

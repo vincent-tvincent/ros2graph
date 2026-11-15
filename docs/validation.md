@@ -11,7 +11,7 @@ aarch64, ROS 2 Lyrical, `rmw_fastrtps_cpp`, Python 3.14.4 and aiohttp 3.14.5.
 
 | Check | Observed result |
 | --- | --- |
-| Python observer, HTTP, RPC, identity and lifecycle tests | 134 passed. |
+| Python observer, HTTP, RPC, identity, compatibility and lifecycle tests | 140 passed. |
 | JavaScript graph/flow/filter/resize/client tests | 119 passed. |
 | Installed ROS package | Colcon build passed on Linux aarch64, ROS 2 Lyrical, Python 3.14.4; all three executables registered. |
 | Ordinary launch command | Installed `ros2graph.launch.py` started with the default empty tracing parameter, served `/healthz`, and exited cleanly. |

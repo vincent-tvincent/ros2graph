@@ -30,6 +30,7 @@ class Smoke:
         self.output = output
         self.timeout = timeout
         self.processes = []
+        self.expected_running = set()
         self.trace_sessions = set()
         self.trace_directories = set()
         self.lease = None
@@ -49,9 +50,11 @@ class Smoke:
                                  stdout=log, stderr=subprocess.STDOUT,
                                  start_new_session=True, env=environment)
         self.processes.append((label, child, log))
+        self.expected_running.add(child)
         return child
 
     def stop(self, child):
+        self.expected_running.discard(child)
         def group_alive():
             try:
                 os.killpg(child.pid, 0)
@@ -89,8 +92,14 @@ class Smoke:
         deadline = time.monotonic() + self.timeout
         last_error = None
         while time.monotonic() < deadline:
+            for label, child, _log in self.processes:
+                if child in self.expected_running and child.poll() is not None:
+                    raise AssertionError(
+                        f'{label} exited unexpectedly with code {child.returncode} while waiting for '
+                        f'{description}; see {self.output / (label + ".log")}')
             try:
                 value = predicate()
+                last_error = None
                 if value:
                     return value
             except (ConnectionError, OSError, urllib.error.URLError) as exc:

@@ -8,15 +8,16 @@ from types import SimpleNamespace, ModuleType
 import pytest
 
 from ros2graph.graph_observer import GraphObserver, TrafficSampler
-from ros2graph.graph_watch import GraphWatch, STATUS_TYPE, action_activity
+from ros2graph.graph_watch import GraphWatch, STATUS_TYPE, action_activity,raw_message_info_supported
 from ros2graph.graph_transport import project_transport_activity
 from test_graph_observer import Node, Clock, Actions
 
 
-def setup(config=None, provider=None, status_decoder=None):
+def setup(config=None, provider=None, status_decoder=None,supports_message_info=True):
     node, clock = Node(), Clock()
     watcher = GraphWatch(node, config, activity_provider=provider, resolver=lambda _: object,
-                         qos_factory=lambda: None, status_decoder=status_decoder, clock=clock, wall=clock.wall)
+                         qos_factory=lambda: None, status_decoder=status_decoder, clock=clock, wall=clock.wall,
+                         supports_message_info=supports_message_info)
     return node, clock, watcher
 
 
@@ -421,6 +422,38 @@ def test_callback_requires_message_info_and_attributes_real_mapping_metadata_to_
     result = data(watcher, '/value')
     assert {item['publisher_gid']: item['messages'] for item in result['publisher_counts']} == {'0102': 2, '0304': 1}
     assert result['unknown_publisher_messages'] == 1
+
+
+def test_legacy_raw_callback_accepts_only_data_and_counts_unattributed_receipts():
+    node,clock,watcher=setup(supports_message_info=False)
+    discover(watcher,('/value','std_msgs/msg/String'))
+    acquire(watcher);watcher.reconcile();callback=node.callbacks['/value']
+    inspect.signature(callback).bind(b'raw')
+    with pytest.raises(TypeError):inspect.signature(callback).bind(b'raw',{})
+    callback(b'raw');clock.value+=.1;callback(b'next')
+    result=data(watcher,'/value')
+    assert result['state']=='watching' and result['messages']==2 and result['bytes']==7
+    assert result['publisher_counts']==[] and result['unknown_publisher_messages']==2
+
+
+@pytest.mark.parametrize('modern',[False,True])
+def test_installed_subscription_capability_selects_callback_shape_without_distro_names(monkeypatch,modern):
+    subscription=ModuleType('rclpy.subscription')
+    subscription.Subscription=type('Subscription',(),{
+        'CallbackType':SimpleNamespace(WithMessageInfo=1)} if modern else {})
+    monkeypatch.setitem(sys.modules,'rclpy',ModuleType('rclpy'))
+    monkeypatch.setitem(sys.modules,'rclpy.subscription',subscription)
+    assert raw_message_info_supported() is modern
+    node,clock,watcher=setup(supports_message_info=None)
+    discover(watcher,('/value','std_msgs/msg/String'))
+    acquire(watcher);watcher.reconcile();callback=node.callbacks['/value']
+    if modern:
+        with pytest.raises(TypeError):inspect.signature(callback).bind(b'raw')
+        callback(b'raw',{'publisher_gid':b'\x01\x02'})
+        assert data(watcher,'/value')['publisher_counts'][0]['publisher_gid']=='0102'
+    else:
+        callback(b'raw')
+        assert data(watcher,'/value')['unknown_publisher_messages']==1
 
 
 @pytest.mark.parametrize('gid', [{}, {'implementation_identifier': 'rmw_cyclonedds_cpp'},
