@@ -50,6 +50,8 @@ list a topic whose message definition is not installed; its measurements will
 explain that the type cannot be loaded.
 
 The package uses standard ROS graph APIs and is independent of robot type.
+Installation, startup and ordinary graph monitoring have passed on ROS Humble,
+Jazzy and Lyrical. Detailed RPC tracing has been verified on Lyrical with Fast DDS.
 This does **not** mean every ROS distribution, RMW implementation and operating
 system has been physically tested. See [validation coverage](docs/validation.md).
 An unsupported API or unavailable measurement is reported explicitly rather

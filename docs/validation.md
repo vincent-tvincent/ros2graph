@@ -59,6 +59,23 @@ to choose the loopback test listener, and `ROS2GRAPH_TEST_DOMAIN` to choose a
 separate test domain (default 196). Tests stop only their own process groups
 and tracing resources. They do not modify or restart a robot application.
 
-CI also builds the package and runs the untraced attach test in ROS Humble and
-Jazzy containers. Optional tracing is not claimed verified merely because
-those basic jobs pass. See the repository's Actions results for current status.
+## Cross-version CI
+
+[CI run 43747992112](https://github.com/vincent-tvincent/ros2graph/actions/runs/43747992112)
+passed for runtime revision `8d04d19`:
+
+- Python 3.10 and 3.12: 140 Python tests, 119 frontend tests and wheel builds.
+- ROS Humble and Jazzy: colcon build, ordinary launch, installed parameter-file
+  startup, attach to a running demo, live receipts, finite sampling and clean
+  independent shutdown.
+
+The Humble check exposed its older one-argument raw callback API; capability
+detection now counts those receipts without inventing publisher attribution.
+A subsequent full Lyrical test preserved modern publisher GIDs for all 29
+checked receipts (18 untraced and 11 traced), with zero unattributed messages.
+Service/action tracing, same-name domain isolation and cleanup passed again.
+The Python 3.10 rate assertion uses numeric tolerance for floating-point sums.
+
+Optional tracing is not claimed verified on Humble or Jazzy merely because
+their basic jobs pass. Lyrical/Fast DDS is the verified detailed-tracing
+environment. See the repository's Actions page for newer validation results.
