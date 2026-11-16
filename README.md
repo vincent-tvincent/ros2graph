@@ -2,31 +2,45 @@
 
 A standalone, browser-based ROS 2 graph explorer. See nodes, typed topics,
 services and actions, then follow their live activity without changing your
-robot application.
+ROS application.
 
-Install it in a ROS workspace, source the same ROS environment as your robot,
-and run:
+**See live traffic.** Watch observed rates, message counts and activity along
+selected paths.
+
+![Live ROS traffic, moving markers and update controls](docs/demos/01-live-traffic.gif)
+
+**Follow relationships.** Select connected paths, isolate a topic, then zoom,
+pan and return to the overview.
+
+![Relationship navigation, focus, zoom and pan](docs/demos/02-explore-focus.gif)
+
+**Filter and search.** Show topics, actions and services independently, reveal
+internal ROS interfaces and find objects by name or type.
+
+![Interface visibility, infrastructure and search](docs/demos/03-filter-search.gif)
+
+**Inspect service and action traffic.** View request/reply phases, feedback,
+status and goal/cancel/result channels.
+
+![Service request/reply and action traffic inspection](docs/demos/04-services-actions.gif)
+
+**Arrange your workspace.** Resize and scroll the interface list, use keyboard
+controls and add local node notes.
+
+![Resizable interface list and local node annotations](docs/demos/05-layout-notes.gif)
+
+*Recorded from the included hardware-free ROS demo. Detailed service/action
+phase counts use the optional trace collector; captions and cursors are recording
+overlays. [Recording instructions](docs/demos/README.md#record-the-demos-again).*
+
+Install it in a ROS workspace, source the same ROS environment as your
+application, and run:
 
 ```bash
 ros2 run ros2graph ros2graph
 ```
 
-Open **http://localhost:8080/**. No application plugins, node annotations,
-custom message schema, modified robot launch file or Station installation is
-required. The browser itself does not need ROS.
-
-Originally extracted from
-[SO-Arm Station](https://github.com/vincent-tvincent/soarm-station-runtime),
-ros2graph has no dependency on LeRobot, a particular robot, cameras, motor
-drivers, model weights or the Station dashboard.
-
-![ros2graph live traffic demonstration](docs/demos/01-live-traffic.gif)
-
-*Actual ROS demo traffic, with a topic selected and publisher/subscriber paths
-highlighted. Captions and cursor are recording overlays.*
-
-[Watch all five demonstrations](docs/demos/README.md): live traffic, navigation,
-filtering, service/action inspection, and layout controls with node notes.
+Open **http://localhost:8080/**. The browser needs no ROS installation.
 
 ## What it provides
 
@@ -44,40 +58,6 @@ filtering, service/action inspection, and layout controls with node notes.
   ROS tracepoints. No application source instrumentation is required.
 - A small read-only graph HTTP API for other tools. No arbitrary topic
   publisher, service caller, action client or robot control endpoint.
-
-## Demonstrations
-
-The clips use the included demo, not physical hardware. Counters and moving
-markers come from live ROS messages and trace events. Each clip runs for about
-17–25 seconds; the [gallery](docs/demos/README.md) includes recording instructions.
-
-<details>
-<summary>Explore relationships, isolate a topic, zoom, pan and restore the overview</summary>
-
-![Explore relationships and focus](docs/demos/02-explore-focus.gif)
-
-</details>
-
-<details>
-<summary>Filter topics, actions and services; reveal infrastructure and search</summary>
-
-![Interface filtering and search](docs/demos/03-filter-search.gif)
-
-</details>
-
-<details>
-<summary>Inspect service request/reply phases and action status, feedback and RPC channels</summary>
-
-![Service and action inspection](docs/demos/04-services-actions.gif)
-
-</details>
-
-<details>
-<summary>Resize and scroll the interface list, use keyboard controls and annotate nodes</summary>
-
-![Layout controls and local node notes](docs/demos/05-layout-notes.gif)
-
-</details>
 
 ## Requirements and compatibility
 
@@ -417,9 +397,6 @@ Contributions should preserve the distinction between discovery, observer
 receipt and confirmed endpoint activity. Include a focused regression test for
 changed measurement or selection behavior. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## License and origin
+## License
 
 Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
-The original graph was developed as part of SO-Arm Station and extracted into
-this independent project. Station retains its integrated viewer; installing
-ros2graph does not replace or control Station.
