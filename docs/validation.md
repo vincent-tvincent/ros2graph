@@ -79,3 +79,35 @@ The Python 3.10 rate assertion uses numeric tolerance for floating-point sums.
 Optional tracing is not claimed verified on Humble or Jazzy merely because
 their basic jobs pass. Lyrical/Fast DDS is the verified detailed-tracing
 environment. See the repository's Actions page for newer validation results.
+
+## Live GIF recordings and sustained tracing — November 15, 2026
+
+The [five demonstrations](demos/README.md) record the real application connected
+to the running String/Trigger/Fibonacci demo. Each GIF was decoded successfully,
+reviewed visually and checked for looping playback. The files are 1280×889 at
+10 FPS, run for 17.4–25.1 seconds, and total approximately 4.7 MiB. Capture raised
+no browser JavaScript errors. [Recording metadata](demos/recording.json) gives
+durations, frame counts, sizes and hashes; the recording tool is included.
+
+The longer recording session exposed a resource leak that short startup tests
+had missed: Babeltrace 2.1.2 snapshot iterators retain a graph/listener reference
+cycle. The collector reached 1,022 descriptors, including 1,000 deleted trace
+file handles. The reader now releases those cycles after each finite snapshot,
+including constructor/processing failures and early event-limit exits. Partial
+iterators are drained without adding discarded events to counters, so native
+message buffers are also released.
+
+After the fix, the live recording collector remained at six descriptors with
+zero deleted trace-file handles for 791.5 seconds (over 13 minutes). It reported
+no trace loss. The demo, viewer and collector then exited with status 0, and
+their listener, owned trace session, socket and temporary snapshots were removed.
+No production robot process, configuration or hardware was changed.
+
+The final resource regression suite passes on full reads, early processing
+limits, decoder exceptions and constructor exceptions. A separate actual
+Babeltrace soak ran 660 finite decodes with automatic Python GC disabled:
+220 complete reads, 220 early-limit exits and 220 injected errors. Descriptor
+counts stayed at five throughout each mode. After warmup, live native heap
+remained about 5.04–5.06 MB and RSS about 34.1–34.2 MB. Discarded cleanup events
+were never added to measurement counters. The full Python suite now has
+144 passing tests.

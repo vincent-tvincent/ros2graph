@@ -20,9 +20,13 @@ Originally extracted from
 ros2graph has no dependency on LeRobot, a particular robot, cameras, motor
 drivers, model weights or the Station dashboard.
 
-![ros2graph showing the included hardware-free demo](docs/viewer.png)
+![ros2graph live traffic demonstration](docs/demos/01-live-traffic.gif)
 
-*Included demo graph, with a topic selected and publisher/subscriber paths highlighted.*
+*Actual ROS demo traffic, with a topic selected and publisher/subscriber paths
+highlighted. Captions and cursor are recording overlays.*
+
+[Watch all five demonstrations](docs/demos/README.md): live traffic, navigation,
+filtering, service/action inspection, and layout controls with node notes.
 
 ## What it provides
 
@@ -40,6 +44,40 @@ drivers, model weights or the Station dashboard.
   ROS tracepoints. No application source instrumentation is required.
 - A small read-only graph HTTP API for other tools. No arbitrary topic
   publisher, service caller, action client or robot control endpoint.
+
+## Demonstrations
+
+The clips use the included demo, not physical hardware. Counters and moving
+markers come from live ROS messages and trace events. Each clip runs for about
+17–25 seconds; the [gallery](docs/demos/README.md) includes recording instructions.
+
+<details>
+<summary>Explore relationships, isolate a topic, zoom, pan and restore the overview</summary>
+
+![Explore relationships and focus](docs/demos/02-explore-focus.gif)
+
+</details>
+
+<details>
+<summary>Filter topics, actions and services; reveal infrastructure and search</summary>
+
+![Interface filtering and search](docs/demos/03-filter-search.gif)
+
+</details>
+
+<details>
+<summary>Inspect service request/reply phases and action status, feedback and RPC channels</summary>
+
+![Service and action inspection](docs/demos/04-services-actions.gif)
+
+</details>
+
+<details>
+<summary>Resize and scroll the interface list, use keyboard controls and annotate nodes</summary>
+
+![Layout controls and local node notes](docs/demos/05-layout-notes.gif)
+
+</details>
 
 ## Requirements and compatibility
 

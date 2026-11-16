@@ -1,0 +1,54 @@
+{
+  "recorded_date": "2026-11-15",
+  "source": "Live ROS 2 Lyrical demonstration with Fast DDS and optional RPC tracing",
+  "overlays": "Caption and cursor only",
+  "fps": 10,
+  "browser_errors": 0,
+  "clips": [
+    {
+      "file": "01-live-traffic.gif",
+      "width": 1280,
+      "height": 889,
+      "frames": 184,
+      "duration_s": 18.4,
+      "bytes": 531534,
+      "sha256": "da5e778c6f4988aa856e86783eaa0937cab60fa5c1816cdc44331379ac4db35b"
+    },
+    {
+      "file": "02-explore-focus.gif",
+      "width": 1280,
+      "height": 889,
+      "frames": 174,
+      "duration_s": 17.4,
+      "bytes": 713821,
+      "sha256": "679bc7a2cce513b3552ca6dc8af3482581417f7eafce7dbdec96740a060a6edc"
+    },
+    {
+      "file": "03-filter-search.gif",
+      "width": 1280,
+      "height": 889,
+      "frames": 202,
+      "duration_s": 20.2,
+      "bytes": 960947,
+      "sha256": "79314eda74684cfc895cef635ae083d0c999439fc5df8c3ee5e08ddf557ab1c8"
+    },
+    {
+      "file": "04-services-actions.gif",
+      "width": 1280,
+      "height": 889,
+      "frames": 210,
+      "duration_s": 21.0,
+      "bytes": 1810702,
+      "sha256": "5cb7ebd2b7d3cd4be4a5d60d5ad41425336d32c03e3f52f0e306e0e4e051e4e3"
+    },
+    {
+      "file": "05-layout-notes.gif",
+      "width": 1280,
+      "height": 889,
+      "frames": 251,
+      "duration_s": 25.1,
+      "bytes": 949357,
+      "sha256": "d3b24779e1fa378519fbcf4f343c94c1fa608022761ea81f182737ad66eee6fb"
+    }
+  ]
+}
