@@ -4,30 +4,42 @@ A standalone, browser-based ROS 2 graph explorer. See nodes, typed topics,
 services and actions, then follow their live activity without changing your
 ROS application.
 
+Select a preview to watch the full recording.
+
 **See live traffic.** Watch observed rates, message counts and activity along
 selected paths.
 
-![Live ROS traffic, moving markers and update controls](docs/demos/01-live-traffic.gif)
+[![Live ROS traffic, moving markers and update controls](docs/demos/posters/01-live-traffic.webp)](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/01-live-traffic.webp)
+
+[Watch · 18 s](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/01-live-traffic.webp) · [Original GIF](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/01-live-traffic.gif)
 
 **Follow relationships.** Select connected paths, isolate a topic, then zoom,
 pan and return to the overview.
 
-![Relationship navigation, focus, zoom and pan](docs/demos/02-explore-focus.gif)
+[![Relationship navigation, focus, zoom and pan](docs/demos/posters/02-explore-focus.webp)](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/02-explore-focus.webp)
+
+[Watch · 17 s](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/02-explore-focus.webp) · [Original GIF](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/02-explore-focus.gif)
 
 **Filter and search.** Show topics, actions and services independently, reveal
 internal ROS interfaces and find objects by name or type.
 
-![Interface visibility, infrastructure and search](docs/demos/03-filter-search.gif)
+[![Interface visibility, infrastructure and search](docs/demos/posters/03-filter-search.webp)](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/03-filter-search.webp)
+
+[Watch · 20 s](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/03-filter-search.webp) · [Original GIF](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/03-filter-search.gif)
 
 **Inspect service and action traffic.** View request/reply phases, feedback,
 status and goal/cancel/result channels.
 
-![Service request/reply and action traffic inspection](docs/demos/04-services-actions.gif)
+[![Service request/reply and action traffic inspection](docs/demos/posters/04-services-actions.webp)](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/04-services-actions.webp)
+
+[Watch · 21 s](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/04-services-actions.webp) · [Original GIF](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/04-services-actions.gif)
 
 **Arrange your workspace.** Resize and scroll the interface list, use keyboard
 controls and add local node notes.
 
-![Resizable interface list and local node annotations](docs/demos/05-layout-notes.gif)
+[![Resizable interface list and local node annotations](docs/demos/posters/05-layout-notes.webp)](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/05-layout-notes.webp)
+
+[Watch · 25 s](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/playback/05-layout-notes.webp) · [Original GIF](https://raw.githubusercontent.com/vincent-tvincent/ros2graph/main/docs/demos/05-layout-notes.gif)
 
 *Recorded from the included hardware-free ROS demo. Detailed service/action
 phase counts use the optional trace collector; captions and cursors are recording
